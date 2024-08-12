@@ -62,34 +62,32 @@ public class EmployeeService {
         }
     }
 
-    public static void thangChuc1() throws SQLException {
+    public static void thangChuc1(Connection connection) throws SQLException {
         PreparedStatement ps1 = null;
 
         String updateOldTitle = "update titles set to_date = now() where emp_no = 10002 and to_date = now()";
 
-        conn = DataSourceProvider.getDataSource().getConnection();
-
-        ps1 = conn.prepareStatement(updateOldTitle);
+        ps1 = connection.prepareStatement(updateOldTitle);
         ps1.executeUpdate();
     }
 
-    public static void thangChuc2() throws SQLException {
+    public static void thangChuc2(Connection connection) throws SQLException {
         PreparedStatement ps2 = null;
 
         String insertNewTitle = "insert into titles values (10002, 'Senior Staff', now(), '9999-01-01')";
 
-        conn = DataSourceProvider.getDataSource().getConnection();
-
-        ps2 = conn.prepareStatement(insertNewTitle);
+        ps2 = connection.prepareStatement(insertNewTitle);
         ps2.executeUpdate();
     }
 
     public static void thangChuc3() {
         try {
+            conn = DataSourceProvider.getDataSource().getConnection();
+
             conn.setAutoCommit(false);
 
-            thangChuc1();
-            thangChuc2();
+            thangChuc1(conn);
+            thangChuc2(conn);
 
             conn.commit();
 
